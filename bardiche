@@ -1,0 +1,113 @@
+# Project Bardiche
+
+Bardiche is a project that is redesigning how others might consume a
+layer 2 datapath in the system. This is primarily aimed at solving the
+problem for virtualization, but it can also be consumed for anything
+which wishes to have a high throughput layer 2 datapath. More
+importantly, it allows these applications to utilize the various
+features that Fire Engine and Crossbow have brought to the networking
+stack, while creating a foundation for leveraging the capabilities of
+the system in a way that we can't today.
+
+## Current status as of 18 Dec 2013
+
+An alpha image of SmartOS with the bardiche changes is available. The
+code still needs a lot of work and cleanup. There are also some open
+design questions around squeue integration. See the design document for
+more details. In the coming weeks and months the code will have the
+remaining open questions answered, it will be cleaned up, and we will do
+various performance analysis.
+
+## Images
+
+Project Bardiche is currently an *alpha*. Do *not* use it in production.
+That said, it should basically work. Please give it a shot and provide
+feedback.
+
+  * Bardiche build date: 18 Dec 2013
+  * SmartOS duild date: 18 Dec 2013
+  * [ISO](./images/20131218/platform-20131218T175208Z.iso)
+  * [Platform](./images/20131218/platform-20131218T175208Z.tgz)
+  * [USB](./images/20131218/platform-20131218T175208Z.usb.bz2)
+
+If you have issues or questions about these bits, please ask for
+`rmustacc` in `#smartos` on `irc.freenode.net` or e-mail
+`smartos-discuss@lists.smartos.org`.
+
+### Using bardiche
+
+All kvm instances will be set up to use bardiche and the new vnd driver
+automatically. Once you have that, you should be able to use the `fwadm`
+command or use `ipf -G`.
+
+## Code
+
+This project is under active development. The code below is a snapshot
+from 18 Dec 2013.
+
+This consists of several different changes. The biggest of these is the
+introduction of a new psuedo-driver called `vnd` and a corresponding
+command and library, `vndadm` and `libvnd.so`. The pseudo-driver
+provides a character device that programs can read and write directly,
+as well as use private frame I/O ioctls. The `vnd` driver is wired up to
+use the MAC fast path (like IP) and currently has its own version of
+`squeues` as the IP stack ones are not currently generalizable.
+
+In addition, there are a few other important changes that have come
+along with this for illumos:
+
+  * Introduction of a plug in interface for sdev that a driver can
+    implement
+
+  * Allowing the global zone's `/dev/net` to see all datalinks in zones
+    under `/dev/net/zone/%zonename/%datalink`.
+
+  * snoop and libdlpi can consume the above and thus the GZ can snoop on
+    a zones network interfaces
+
+  * A new dlpi promiscuous option that allows the consumer to only get
+    RX packets promiscuously. This solves the kvm IPv6 loopback bug.
+
+  * ipf receives all IP and IPv6 packets from vnd
+
+The KVM code base has been modified to remove terrible hacks associated
+with the old method of send and receive buffers.
+
+### Delta
+
+Currently this project consists of changes to
+[illumos](http://github.com/joyent/illumos-joyent),
+[illumos-kvm](http://github.com/joyent/illumos-kvm),
+[QEMU](http://github.com/joyent/illumos-kvm-cmd), and
+[smartos-live](http://github.com/joyent/smartos-live).
+
+A series of webrevs are availble here:
+
+  * [illumos](./code/webrevs/illumos/index.html)
+  * [KVM](./code/webrevs/kvm/index.html)
+  * [QEMU](./code/webrevs/kvm-cmd/index.html)
+  * [smartos-live](./code/webrevs/smartos-live/index.html)
+
+A series of git patches are available here:
+
+  * [illumos](./code/patches/illumos.patch)
+  * [KVM](./code/patches/kvm.patch)
+  * [QEMU](./code/patches/kvm-cmd.patch)
+  * [smartos-live](./code/patches/live.patch)
+
+## Design Docs
+
+There are design documents for bardiche and its companion frame I/O.
+These will be updated from time to time and most of the relevant
+information will enter the big theory statement in the code.
+
+  * [Bardiche](./docs/bardiche)
+  * [Frame I/O](./docs/frameio)
+
+
+## Contact
+
+For questions, comments, thoughts, feedback, and anything else, talk to
+Robert Mustacchi, `rmustacc` in `#illumos` and `#smartos` on
+`irc.freenode.net`. Alternatively, send e-mail to
+`smartos-discuss@lists.smartos.org` or ping him directly.
