@@ -1,0 +1,57 @@
+Performance testing
+
+The following are proposed benchmarks for testing bardiche network performance.
+For all of these benchmarks, look for per-second variation and CPU usage (eg,
+roll user and kernel flame graphs).
+
+In each of the following sections, I describe the benchmark, the intent, and
+suggested commands to use.
+
+1. TCP streaming single-threaded
+
+The intent is to measure single-threaded TCP performance.
+
+server: iperf -s
+client: iperf -c SERVER_IP -t 30 -i 1
+
+2. TCP streaming multi-threaded
+
+The intent is to determine maximum TCP performance. The number of threads should
+be scaled to a reasonable number
+
+server: iperf -s
+client: iperf -c SERVER_IP -t 30 -i 1 -P 2	# -P 4, -P 8
+
+3. UDP streaming single-threaded
+
+The intent is to see if there are any differences with UDP handling.
+
+server: iperf -u -s
+client: iperf -u -c SERVER_IP -t 30 -i 1
+
+4. TCP pingpong single-threaded
+
+The intent is to test the performance of high I/O rates: their latency and
+packets/sec. Bandwidth tests can coalesce and reduce the I/O rate, and become
+CPU-bound due to memory movement before the I/O paths are properly tested.
+
+server: ./sfnt-pingpong --affinity 'any;any'
+client: ./sfnt-pingpong --affinity 'any;any' tcp SERVER_IP
+
+I'd focus on the small packet results, eg, 64 bytes. The other results should be
+useful for debugging.
+
+5. UDP pingpong single-threaded
+
+The intent is to test high I/O rates with UDP.
+
+server: ./sfnt-pingpong --affinity 'any;any'
+client: ./sfnt-pingpong --affinity 'any;any' udp SERVER_IP
+
+I'd focus on the small packet results, eg, 64 bytes. The other results should be
+useful for debugging.
+
+URLs
+
+iperf: http://sourceforge.net/projects/iperf/
+sfnt-pingpong: http://www.openonload.org/download.html (in sfnettest)
