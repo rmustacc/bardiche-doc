@@ -9,26 +9,25 @@ features that Fire Engine and Crossbow have brought to the networking
 stack, while creating a foundation for leveraging the capabilities of
 the system in a way that we can't today.
 
-## Current status as of 18 Dec 2013
+## Current status as of 26 Feb 2014
 
-An alpha image of SmartOS with the bardiche changes is available. The
-code still needs a lot of work and cleanup. There are also some open
-design questions around squeue integration. See the design document for
-more details. In the coming weeks and months the code will have the
-remaining open questions answered, it will be cleaned up, and we will do
-various performance analysis.
+From the last round, the work on baridche is largely done. Many bugs
+were squashed, tools made usable, and interfaces made more consistent
+and coherent. Work has gone into the test suite, a full series of manual
+pages for libvnd(3LIB), vndadm(1M), and vnd(7D). A new tool has been
+added called vndstat(1M) to display vnd statistics. 
 
 ## Images
 
-Project Bardiche is currently an *alpha*. Do *not* use it in production.
+Project Bardiche is currently a *beta*. Do *not* use it in production.
 That said, it should basically work. Please give it a shot and provide
 feedback.
 
-  * Bardiche build date: 18 Dec 2013
-  * SmartOS duild date: 18 Dec 2013
-  * [ISO](./images/20131218/platform-20131218T175208Z.iso)
-  * [Platform](./images/20131218/platform-20131218T175208Z.tgz)
-  * [USB](./images/20131218/platform-20131218T175208Z.usb.bz2)
+  * Bardiche build date: 26 Feb 2014
+  * SmartOS duild date: 26 Feb 2014
+  * [ISO](./images/20140226/platform-20140226T220716Z.iso)
+  * [Platform](./images/20140226/platform-20140226T220716Z.tgz)
+  * [USB](./images/20140226/platform-20140226T220716Z.usb.bz2)
 
 If you have issues or questions about these bits, please ask for
 `rmustacc` in `#smartos` on `irc.freenode.net` or e-mail
@@ -43,7 +42,7 @@ command or use `ipf -G`.
 ## Code
 
 This project is under active development. The code below is a snapshot
-from 18 Dec 2013.
+from 26 Feb 2014.
 
 This consists of several different changes. The biggest of these is the
 introduction of a new psuedo-driver called `vnd` and a corresponding
@@ -70,6 +69,26 @@ along with this for illumos:
 
   * ipf receives all IP and IPv6 packets from vnd
 
+The full list of bugs is:
+
+```
+    Project Bardiche
+    OS-2784 want sdev plugin interface
+    OS-2783 want generalized squeues
+    OS-2785 ipf should be able to hook kvm nics
+    OS-2782 want /dev/net/zone/%zonename/%datalink
+    OS-610 snoop and libdlpi should be able to consume
+/dev/net/zone/%zonename
+    OS-2786 .gitignore should include debug object directories
+    OS-2781 dlpi promisc modes should be able to be RX-only
+    OS-2780 Want dlpi primitive DL_EXCLUSIVE_REQ
+    OS-2779 Makefile.man should take care of directory creation
+    OS-2778 dls_promisc doesn't properly handle all transitions
+```
+
+Full descriptions of each bug can be seen at [SmartOS
+Bugview](http://smartos.org/bugview/index.html).
+
 The KVM code base has been modified to remove terrible hacks associated
 with the old method of send and receive buffers.
 
@@ -83,17 +102,17 @@ Currently this project consists of changes to
 
 A series of webrevs are availble here:
 
-  * [illumos](./code/webrevs/illumos/index.html)
-  * [KVM](./code/webrevs/kvm/index.html)
-  * [QEMU](./code/webrevs/kvm-cmd/index.html)
-  * [smartos-live](./code/webrevs/smartos-live/index.html)
+  * [illumos](./code/webrevs/20140226/illumos/index.html)
+  * [KVM](./code/webrevs/20140226/kvm/index.html)
+  * [QEMU](./code/webrevs/20140226/kvm-cmd/index.html)
+  * [smartos-live](./code/webrevs/20140226/smartos-live/index.html)
 
 A series of git patches are available here:
 
-  * [illumos](./code/patches/illumos.patch)
-  * [KVM](./code/patches/kvm.patch)
-  * [QEMU](./code/patches/kvm-cmd.patch)
-  * [smartos-live](./code/patches/live.patch)
+  * [illumos](./code/patches/20140226/illumos.patch)
+  * [KVM](./code/patches/20140226/kvm.patch)
+  * [QEMU](./code/patches/20140226/kvm-cmd.patch)
+  * [smartos-live](./code/patches/20140226/live.patch)
 
 ## Design Docs
 

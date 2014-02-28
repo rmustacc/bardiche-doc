@@ -31,9 +31,7 @@ BOOTSTRAP_FILES = \
 
 MDARGS = \
 	--extras fenced-code-blocks \
-	--extras wiki-tables \
-	--extras link-patterns \
-	--link-patterns-file support/link-patterns.txt
+	--extras wiki-tables
 
 IMAGE_FILES = \
 	illumos_phoenix_small.png
