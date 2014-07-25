@@ -80,10 +80,6 @@ clobber:
 	rm -rf output
 
 sync: all
-	mmkdir /$$MANTA_USER/public/iondg
-	mv output iondg
-	tar cf iondg.tar iondg
-	mrm -r /$$MANTA_USER/public/iondg
-	muntar -f iondg.tar /$$MANTA_USER/public
+	cd output && manta-sync ./ ~~/public/bardiche
 
 FRC:

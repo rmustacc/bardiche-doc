@@ -9,13 +9,11 @@ features that Fire Engine and Crossbow have brought to the networking
 stack, while creating a foundation for leveraging the capabilities of
 the system in a way that we can't today.
 
-## Current status as of 26 Feb 2014
+## Integration Complete
 
-From the last round, the work on baridche is largely done. Many bugs
-were squashed, tools made usable, and interfaces made more consistent
-and coherent. Work has gone into the test suite, a full series of manual
-pages for libvnd(3LIB), vndadm(1M), and vnd(7D). A new tool has been
-added called vndstat(1M) to display vnd statistics. 
+vnd was integrated into SmartOS on 2014 March 19 and is shipping and
+enabled in all SmartOS releases since then. The remainder of this page
+remains for historical purposes.
 
 ## Images
 
